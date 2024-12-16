@@ -7,7 +7,6 @@
   <packaging>pom</packaging>
   <name>databasequiz</name>
   <modules>
-    <module>hibernate</module>
     <module>jpa</module>
   </modules>
 
