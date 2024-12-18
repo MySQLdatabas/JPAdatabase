@@ -15,9 +15,9 @@ public class Main {
         try {
             // Create new User and save it in database
             User newUser = new User();
-            newUser.setUsername("coder5");
-            newUser.setEmail("coder5@example.com");
-            newUser.setPassword("hashed_password5");
+            newUser.setUsername("coder7");
+            newUser.setEmail("coder7@example.com");
+            newUser.setPassword("hashed_password7");
 
             // Save User in database
             em.persist(newUser);

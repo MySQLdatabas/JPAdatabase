@@ -5,6 +5,7 @@
     <persistence-unit name="jpa-hibernate-mysql">
 
         <class>se.iths.java24.User</class>
+        <class>se.iths.java24.Quiz</class>
 
         <properties>
             <!-- Database connection settings -->
