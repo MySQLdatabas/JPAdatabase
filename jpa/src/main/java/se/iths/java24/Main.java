@@ -1,6 +1,7 @@
 package se.iths.java24;
 
 import jakarta.persistence.EntityManager;
+import se.iths.java24.Entity.User;
 
 
 public class Main {

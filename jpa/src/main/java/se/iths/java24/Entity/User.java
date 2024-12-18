@@ -1,4 +1,4 @@
-package se.iths.java24;
+package se.iths.java24.Entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

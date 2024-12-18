@@ -1,4 +1,4 @@
-package se.iths.java24;
+package se.iths.java24.Entity;
 
 import jakarta.persistence.*;
 
@@ -19,7 +19,7 @@ public class Answer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    private se.iths.java24.Question question;
+    private Question question;
 
     public Integer getId() {
         return id;
@@ -45,11 +45,11 @@ public class Answer {
         this.isCorrect = isCorrect;
     }
 
-    public se.iths.java24.Question getQuestion() {
+    public Question getQuestion() {
         return question;
     }
 
-    public void setQuestion(se.iths.java24.Question question) {
+    public void setQuestion(Question question) {
         this.question = question;
     }
 
