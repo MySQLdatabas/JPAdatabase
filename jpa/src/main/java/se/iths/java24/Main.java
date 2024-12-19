@@ -1,7 +1,10 @@
 package se.iths.java24;
 
-import jakarta.persistence.EntityManager;
-import se.iths.java24.Entity.User;
+import jakarta.persistence.EntityManager; // For interacting with the database
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import se.iths.java24.Entity.User;  // Import the User entity class
+import se.iths.java24.Repository.QuestionRepository; // Import the QuestionRepository interface
 
 import java.util.Scanner;
 
@@ -11,7 +14,11 @@ public class Main {
 
 
     public static void main(String[] args) {
+        ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
+        QuestionRepository questionRepository = context.getBean(QuestionRepository.class);
+
         Boolean quit = false;
+
 
         while (!quit) {
             int action = sc.nextInt();
