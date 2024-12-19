@@ -1,5 +1,6 @@
 package se.iths.java24;
 
+
 import jakarta.persistence.EntityManager; // For interacting with the database
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -7,6 +8,11 @@ import se.iths.java24.Entity.DifficultyLevel;
 import se.iths.java24.Entity.Question;
 import se.iths.java24.Entity.User;  // Import the User entity class
 import se.iths.java24.Repository.QuestionRepository; // Import the QuestionRepository interface
+import jakarta.persistence.EntityManager;
+import se.iths.java24.Entity.Quiz;
+import se.iths.java24.Entity.User;
+import se.iths.java24.Repository.QuizRepository;
+
 
 import java.util.List;
 import java.util.Scanner;
@@ -17,8 +23,10 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Boolean quit = false;
-        printAction();
+
+        boolean quit = false;
+        printActions();
+
 
         while (!quit) {
             int action = sc.nextInt();
@@ -41,6 +49,7 @@ public class Main {
 
 
     private static void manageQuiz(Scanner sc) {
+        QuizRepository quizRepository = new QuizRepository();
         System.out.println("\nManage quiz:");
         System.out.println(""" 
                 1 - View quiz
@@ -60,12 +69,58 @@ public class Main {
                     return;
                 }
                 case 1 -> {
+                    List<Quiz> quizzes = quizRepository.getAllQuiz();
+                    quizzes.forEach(quiz ->
+                            System.out.println("ID: " + quiz.getQuizId() +
+                                    ", Title: " + quiz.getTitle() +
+                                    ", Description: " + quiz.getDescription()));
                 }
                 case 2 -> {
+                    System.out.println("Enter quiz title:");
+                    String title = sc.nextLine();
+                    System.out.println("Enter quiz description:");
+                    String description = sc.nextLine();
+
+                    Quiz newQuiz = new Quiz();
+                    newQuiz.setTitle(title);
+                    newQuiz.setDescription(description);
+
+                    quizRepository.createQuiz(newQuiz);
+                    System.out.println("Quiz created successfully.");
                 }
                 case 3 -> {
+                    System.out.println("Enter the ID of the quiz to update:");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    Quiz quizToUpdate = quizRepository.getQuizById(id);
+                    if (quizToUpdate == null) {
+                        System.out.println("Quiz not found.");
+                        break;
+                    }
+
+                    System.out.println("Enter new title (leave blank to keep current):");
+                    String newTitle = sc.nextLine();
+                    if (!newTitle.isBlank()) {
+                        quizToUpdate.setTitle(newTitle);
+                    }
+
+                    System.out.println("Enter new description (leave blank to keep current):");
+                    String newDescription = sc.nextLine();
+                    if (!newDescription.isBlank()) {
+                        quizToUpdate.setDescription(newDescription);
+                    }
+
+                    quizRepository.updateQuiz(quizToUpdate);
+                    System.out.println("Quiz updated successfully.");
                 }
                 case 4 -> {
+                    System.out.println("Enter the ID of the quiz to delete:");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    quizRepository.deleteQuiz(id);
+                    System.out.println("Quiz deleted successfully.");
                 }
                 default -> System.out.println("\nOgiltigt val, försök igen");
             }
@@ -266,7 +321,7 @@ public class Main {
     }
 
 
-    private static void printAction() {
+    private static void printActions() {
             System.out.println("\nQuiz menu: \n");
             System.out.println(""" 
                     1 - Manage quiz
