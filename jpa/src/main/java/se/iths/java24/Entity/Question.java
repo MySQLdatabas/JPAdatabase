@@ -97,6 +97,3 @@ public class Question {
     }
 }
 
-enum DifficultyLevel {
-    Easy, Medium, Hard
-}
