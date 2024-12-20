@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Questions")
+@Table(name = "Question")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,13 +15,14 @@ public class Question {
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(name = "TEXT", nullable = false)
     private String text;
 
     @Enumerated(EnumType.STRING)
     private DifficultyLevel difficulty_level;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+
     private List<Answer> answers;
 
     public Question() {
