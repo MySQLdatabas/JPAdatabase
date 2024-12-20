@@ -27,12 +27,10 @@ public class Main {
 
 
         testConnection();
-
-        boolean quit = false;
         printActions();
+        boolean quit = false;
 
 
-        printAction();
 
         while (!quit) {
             System.out.println("\nEnter your choice:");
