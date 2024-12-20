@@ -1,4 +1,3 @@
-
 CREATE DATABASE demo;
 USE demo;
 
@@ -37,7 +36,7 @@ CREATE TABLE Answer (
 CREATE TABLE Result (
                         result_id INT AUTO_INCREMENT PRIMARY KEY,
                         score INT NOT NULL,
-                        completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         user_id INT,
                         quiz_id INT,
                         FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE,

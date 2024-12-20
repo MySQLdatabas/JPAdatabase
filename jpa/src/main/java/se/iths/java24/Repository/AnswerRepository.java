@@ -12,7 +12,7 @@ public class AnswerRepository {
         JPAUtil.inTransaction(em -> em.persist(answer));
     }
 
-    public static Answer getAnswerById(int id) {
+    public Answer getAnswerById(int id) {
         return JPAUtil.getEntityManager().find(Answer.class, id);
     }
 

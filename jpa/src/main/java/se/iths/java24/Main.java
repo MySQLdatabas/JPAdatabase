@@ -2,16 +2,9 @@ package se.iths.java24;
 
 
 import jakarta.persistence.EntityManager; // For interacting with the database
-import se.iths.java24.Entity.DifficultyLevel;
-import se.iths.java24.Entity.Question;
-import se.iths.java24.Entity.User;  // Import the User entity class
-import se.iths.java24.Repository.QuestionRepository; // Import the QuestionRepository interface
+import se.iths.java24.Entity.*;
+import se.iths.java24.Repository.*;
 import jakarta.persistence.EntityManager;
-import se.iths.java24.Entity.Answer;
-import se.iths.java24.Repository.AnswerRepository;
-import se.iths.java24.Entity.Quiz;
-import se.iths.java24.Repository.QuizRepository;
-import se.iths.java24.Repository.UserRepository;
 import se.iths.java24.Service.UserService;
 
 import java.util.List;
@@ -136,6 +129,7 @@ public class Main {
     }
 
     private static void manageResult(Scanner sc) {
+        ResultRepository resultRepository = new ResultRepository();
         System.out.println("\nManage result:");
         System.out.println(""" 
                     1 - View result
@@ -152,10 +146,57 @@ public class Main {
                 switch (action) {
                     case 0 -> {System.out.println("\nReturning to main menu...");
                         return;}
-                    case 1 -> {}
-                    case 2 -> {}
-                    case 3 -> {}
-                    case 4 -> {}
+                    case 1 -> {
+                        List<Result> results = resultRepository.getAllResults();
+                        results.forEach(result ->
+                                System.out.println("ID: " + result.getId() +
+                                        ", User id: " + result.getUser() +
+                                        ", Quiz id: " + result.getQuiz() +
+                                        ", Score: " + result.getScore()));
+
+
+                    }
+                    case 2 -> {
+                        System.out.println("Enter user id:");
+                        int userId = sc.nextInt();
+                        User user = resultRepository.getUserById(userId);
+                        System.out.println("Enter quiz id:");
+                        int quizId = sc.nextInt();
+                        Quiz quiz = resultRepository.getQuizById(quizId);
+                        System.out.println("Enter score");
+                        int score = sc.nextInt();
+
+                        if (user != null||quiz != null) {
+                            Result newResult = new Result();
+                            newResult.setScore(score);
+                            newResult.setUser(user);
+                            newResult.setQuiz(quiz);
+
+                            resultRepository.createResult(newResult);
+                            System.out.println("Result created successfully.");
+                        }
+                    }
+                    case 3 -> {
+                        System.out.println("Enter result ID to update");
+                        int resultId = sc.nextInt();
+                        Result resultToUpdate = resultRepository.getResultById(resultId);
+                        if (resultToUpdate == null) {
+                            System.out.println("Result not found.");
+                            break;
+                        }
+                        System.out.println("Enter new score:");
+                        int newScore = sc.nextInt();
+                        resultToUpdate.setScore(newScore);
+
+                        resultRepository.updateResult(resultToUpdate);
+                        System.out.println("\nNew result created successfully");
+                    }
+                    case 4 -> {
+                        System.out.println("Enter result id to delete:");
+                        int resultId = sc.nextInt();
+                        resultRepository.deleteResultById(resultId);
+                        System.out.println("Result deleted successfully");
+                    }
                     default -> System.out.println("\nOgiltigt val, försök igen");
                 }
             }
@@ -328,7 +369,7 @@ public class Main {
                         System.out.println("\nEnter answer id:");
                         int answerId = sc.nextInt();
                         sc.nextLine();
-                        Answer answerToUpdate = AnswerRepository.getAnswerById(answerId);
+                        Answer answerToUpdate = answerRepository.getAnswerById(answerId);
 
                         if (answerToUpdate == null) {
                             System.out.println("Answer not found.");
@@ -348,8 +389,6 @@ public class Main {
 
                         answerRepository.updateAnswer(answerToUpdate);
                         System.out.println("\nNew answer created successfully");
-
-                        //QuestionId is the same as before
 
                     }
                     case 4 -> {
