@@ -7,8 +7,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "User", schema = "demo")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id") // Map the field to the correct column name
     private Long userId;
 
     @Column(name = "username", nullable = false)
@@ -23,10 +25,23 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+
+
+    public User(String name, String email, String password) {
+        this.username = name;
+        this.email = email;
+        this.password = password;
+
+    }
+
+    public User() {
+
+    }
+
     @PrePersist
     public void prePersist() {
-        LocalDateTime now = LocalDateTime.now();
-        createdAt = now;    // Set the createdAt timestamp
+        System.out.println("Setting createdAt timestamp for user.");
+        createdAt = LocalDateTime.now();
     }
 
     public Long getUserId() {
@@ -69,6 +84,11 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    // Optional alias for setUsername
+    public void setName(String name) {
+        setUsername(name);
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -78,6 +98,5 @@ public class User {
                 ", createdAt=" + createdAt +
                 '}';
     }
-
 }
 
