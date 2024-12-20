@@ -45,12 +45,21 @@ public class Answer {
         this.isCorrect = isCorrect;
     }
 
-    public Question getQuestion() {
+    public Question getQuestion(int questionId) {
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public Answer() {
+    }
+
+    public Answer(Question question, Boolean isCorrect, String answerText) {
+        this.question = question;
+        this.isCorrect = isCorrect;
+        this.answerText = answerText;
     }
 
     @Override
