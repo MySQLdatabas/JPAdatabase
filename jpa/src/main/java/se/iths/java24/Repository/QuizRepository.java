@@ -16,7 +16,7 @@ public class QuizRepository {
 
     public List<Quiz> getAllQuiz() {
         return JPAUtil.getEntityManager()
-                .createQuery("select title, description from Quiz", Quiz.class)
+                .createQuery("select q from Quiz q", Quiz.class)
                 .getResultList();
     }
 

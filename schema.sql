@@ -1,63 +1,63 @@
+
 CREATE DATABASE demo;
-use demo;
+USE demo;
 
 CREATE TABLE User (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50)NOT NULL UNIQUE,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                      user_id INT AUTO_INCREMENT PRIMARY KEY,
+                      username VARCHAR(50) NOT NULL UNIQUE,
+                      email VARCHAR(50) NOT NULL UNIQUE,
+                      password VARCHAR(50) NOT NULL,
+                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Quiz (
-     quiz_id INT AUTO_INCREMENT PRIMARY KEY,
-     title VARCHAR(50) NOT NULL,
-     description TEXT,
-     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                      quiz_id INT AUTO_INCREMENT PRIMARY KEY,
+                      title VARCHAR(50) NOT NULL,
+                      description TEXT,
+                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Question (
-    question_id INT AUTO_INCREMENT PRIMARY KEY,
-    text TEXT NOT NULL,
-    difficulty ENUM('Easy', 'Medium', 'Hard'),
-    quiz_id INT,
-    FOREIGN KEY (quiz_id) REFERENCES Quiz(quiz_id)
+                          question_id INT AUTO_INCREMENT PRIMARY KEY,
+                          text TEXT NOT NULL,
+                          difficulty ENUM('Easy', 'Medium', 'Hard'),
+                          quiz_id INT,
+                          FOREIGN KEY (quiz_id) REFERENCES Quiz(quiz_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Answer (
-    answer_id INT AUTO_INCREMENT PRIMARY KEY,
-    answer_text TEXT,
-    is_correct BOOLEAN,
-    question_id INT,
-    FOREIGN KEY (question_id) REFERENCES Question(question_id)
+                        answer_id INT AUTO_INCREMENT PRIMARY KEY,
+                        answer_text TEXT,
+                        is_correct BOOLEAN,
+                        question_id INT,
+                        FOREIGN KEY (question_id) REFERENCES Question(question_id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE Result (
-    result_id INT AUTO_INCREMENT PRIMARY KEY,
-    score INT NOT NULL,
-    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    user_id INT,
-    quiz_id INT,
-    FOREIGN KEY (user_id) REFERENCES User(user_id),
-    FOREIGN KEY (quiz_id) REFERENCES Quiz(quiz_id)
+                        result_id INT AUTO_INCREMENT PRIMARY KEY,
+                        score INT NOT NULL,
+                        completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        user_id INT,
+                        quiz_id INT,
+                        FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE,
+                        FOREIGN KEY (quiz_id) REFERENCES Quiz(quiz_id) ON DELETE CASCADE
 );
 
-
--- Insert data för Users table
 INSERT INTO User (username, email, password)
 VALUES
     ('coder1', 'coder1@example.com', 'hashed_password1'),
     ('coder2', 'coder2@example.com', 'hashed_password2'),
     ('coder3', 'coder3@example.com', 'hashed_password3');
 
--- Insert data för Quizzes table
+-- Insert data for Quiz table
 INSERT INTO Quiz (title, description)
 VALUES
     ('Python Quiz', 'Test your Python programming knowledge'),
     ('JavaScript Quiz', 'Test your JavaScript programming skills'),
     ('Java Quiz', 'Test your Java programming knowledge');
 
--- Insert data för Questions table
+-- Insert data for Question table
 INSERT INTO Question (quiz_id, text, difficulty)
 VALUES
     (1, 'What is the output of the following code:\nprint(2 + 2 * 2)', 'Easy'),
@@ -70,7 +70,7 @@ VALUES
     (3, 'Explain the concept of inheritance in Java.', 'Medium'),
     (3, 'What is the difference between an interface and an abstract class in Java?', 'Hard');
 
--- Insert data för Answers table
+-- Insert data for Answer table
 INSERT INTO Answer (question_id, answer_text, is_correct)
 VALUES
     (1, '6', TRUE),
@@ -96,10 +96,9 @@ VALUES
     (7, 'Interfaces can have constructors, while abstract classes cannot.', FALSE),
     (7, 'There is no difference between interfaces and abstract classes.', FALSE);
 
--- Insert data för Results table (example data)
+-- Insert data for Result table
 INSERT INTO Result (user_id, quiz_id, score)
 VALUES
-    (1, 1, 80.00),
-    (2, 2, 75.00),
-    (3, 3, 90.00);
-
+    (1, 1, 80),
+    (2, 2, 75),
+    (3, 3, 90);
