@@ -1,7 +1,6 @@
 package se.iths.java24.Repository;
 
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import se.iths.java24.Entity.Question;
 import se.iths.java24.JPAUtil;
 

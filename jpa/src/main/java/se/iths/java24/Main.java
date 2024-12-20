@@ -2,8 +2,6 @@ package se.iths.java24;
 
 
 import jakarta.persistence.EntityManager; // For interacting with the database
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import se.iths.java24.Entity.DifficultyLevel;
 import se.iths.java24.Entity.Question;
 import se.iths.java24.Entity.User;  // Import the User entity class
