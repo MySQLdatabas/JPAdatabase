@@ -2,11 +2,13 @@ package se.iths.java24.Repository;
 
 
 import se.iths.java24.Entity.Question;
+import se.iths.java24.Entity.Quiz;
 import se.iths.java24.JPAUtil;
 
 import java.util.List;
 
 public class QuestionRepository {
+
 
     public void createQuestion(Question question) {
         JPAUtil.inTransaction(em -> em.persist(question));
@@ -20,9 +22,14 @@ public class QuestionRepository {
         JPAUtil.inTransaction(em -> em.merge(question));
     }
 
+    public Quiz getQuizById(int id) {
+        return JPAUtil.getEntityManager().find(Quiz.class, id);
+    }
+
     public List<Question> listQuestions(int quizId) {
         return JPAUtil.getEntityManager()
-                .createQuery("SELECT q.text, q.difficulty FROM Question q JOIN Quiz qu on q.quiz_id = qu.quiz_id WHERE qu.quiz_id = :quizId ORDER BY difficulty", Question.class)
+                .createQuery("SELECT q FROM Question q JOIN q.quiz qu WHERE qu.id = :quizId ORDER BY q.difficulty_level", Question.class)
+                .setParameter("quizId", quizId)
                 .getResultList();
     }
 

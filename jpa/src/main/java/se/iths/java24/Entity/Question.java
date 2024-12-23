@@ -15,10 +15,11 @@ public class Question {
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 
-    @Column(name = "TEXT", nullable = false)
+    @Column(name = "text", nullable = false)
     private String text;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "difficulty")
     private DifficultyLevel difficulty_level;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)

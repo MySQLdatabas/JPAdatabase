@@ -231,9 +231,6 @@ public class Main {
                                         ", Difficulty: " + question.getDifficulty_level()));
                     }
                     case 2 -> {
-                        System.out.println("Enter question title:");
-                        String text = sc.nextLine();
-
                         System.out.println("Enter question description:");
                         String description = sc.nextLine();
 
@@ -243,10 +240,14 @@ public class Main {
                         System.out.println("3. Hard");
                         System.out.print("Enter your choice (1-3): ");
                         int difficultyChoice = sc.nextInt();
-                        sc.nextLine(); // Consume the newline character
+
+                        System.out.println("Enter quiz id:");
+                        int quizId = sc.nextInt();
+                        Quiz quiz = questionRepository.getQuizById(quizId);
 
                         Question newQuestion = new Question();
-                        newQuestion.setText(text);
+                        newQuestion.setQuiz(quiz);
+                        newQuestion.setText(description);
                         newQuestion.setDifficulty_level(getDifficultyLevelByChoice(difficultyChoice));
 
                         // Assuming questionRepository is an instance of a class
