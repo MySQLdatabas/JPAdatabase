@@ -14,8 +14,17 @@ public class QuestionRepository {
         JPAUtil.inTransaction(em -> em.persist(question));
     }
 
-    public void deleteQuestion(int id) {
-        JPAUtil.inTransaction(em -> em.remove(id));
+    public Question deleteQuestion(int id) {
+       JPAUtil.inTransaction(em -> {
+            Question question = em.find(Question.class, id);
+            if (question != null) {
+                em.remove(question);
+                System.out.println("Question deleted successfully!");
+            } else {
+                System.out.println("Question with id " + id + " doesn't exist.");
+            }
+        });
+        return null;
     }
 
     public void updateQuestion(Question question) {

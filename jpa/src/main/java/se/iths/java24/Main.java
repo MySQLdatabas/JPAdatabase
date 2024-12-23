@@ -250,8 +250,6 @@ public class Main {
                         newQuestion.setText(description);
                         newQuestion.setDifficulty_level(getDifficultyLevelByChoice(difficultyChoice));
 
-                        // Assuming questionRepository is an instance of a class
-                        // that handles database interactions
                         questionRepository.createQuestion(newQuestion);
 
                         System.out.println("Question created successfully.");
@@ -260,7 +258,6 @@ public class Main {
                     case 3 -> {
                         System.out.println("Enter the ID of the question to update:");
                         int id = sc.nextInt();
-                        sc.nextLine(); // Consume the newline character
 
                         Question questionToUpdate = questionRepository.getQuestionById(id);
                         if (questionToUpdate == null) {
@@ -281,7 +278,6 @@ public class Main {
                         System.out.println("4. Keep Current");
                         System.out.print("Enter your choice (1-4): ");
                         int difficultyChoice = sc.nextInt();
-                        sc.nextLine(); // Consume the newline character
 
                         if (difficultyChoice != 4) {
                             questionToUpdate.setDifficulty_level(getDifficultyLevelByChoice(difficultyChoice));
@@ -293,10 +289,8 @@ public class Main {
                     case 4 -> {
                         System.out.println("Enter the ID of the question to delete:");
                         int id = sc.nextInt();
-                        sc.nextLine();
+                        Question questionToDelete = questionRepository.deleteQuestion(id);
 
-                        questionRepository.deleteQuestion(id);
-                        System.out.println("Question deleted successfully.");
                     }
                     default -> System.out.println("\nOgiltigt val, försök igen");
                 }
