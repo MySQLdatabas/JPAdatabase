@@ -6,6 +6,7 @@ import se.iths.java24.Entity.*;
 import se.iths.java24.Repository.*;
 import jakarta.persistence.EntityManager;
 import se.iths.java24.Service.UserService;
+import se.iths.java24.Statistics.QuizStatistics;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,6 @@ public class Main {
         testConnection();
         printActions();
         boolean quit = false;
-
 
 
         while (!quit) {
@@ -57,6 +57,7 @@ public class Main {
                 2 - Create quiz
                 3 - Update quiz
                 4 - Delete quiz
+                5 - View quiz statistics
                 0 - Back to main menu
                 """);
 
@@ -123,6 +124,31 @@ public class Main {
                     quizRepository.deleteQuiz(id);
                     System.out.println("Quiz deleted successfully.");
                 }
+                case 5 -> {
+                    System.out.println("1 - Total quizzes");
+                    System.out.println("2 - Recent quizzes");
+                    System.out.println("3 - Count quizzes by description length");
+                    System.out.println("0 - Back");
+                    int statAction = sc.nextInt();
+                    sc.nextLine();
+
+                    switch (statAction) {
+                        case 0 -> System.out.println("Returning...");
+                        case 1 -> System.out.println("Total quizzes: " + QuizStatistics.getTotalQuizzes());
+                        case 2 -> {
+                            System.out.println("Enter number of recent quizzes to fetch:");
+                            int limit = sc.nextInt();
+                            List<Quiz> recentQuizzes = QuizStatistics.getRecentQuizzes(limit);
+                            recentQuizzes.forEach(System.out::println);
+                        }
+                        case 3 -> {
+                            System.out.println("Enter minimum description length:");
+                            int minLength = sc.nextInt();
+                            System.out.println("Count: " + QuizStatistics.countQuizzesByDescriptionLength(minLength));
+                        }
+                        default -> System.out.println("Invalid choice.");
+                    }
+                }
                 default -> System.out.println("\nOgiltigt val, försök igen");
             }
         }
@@ -132,74 +158,76 @@ public class Main {
         ResultRepository resultRepository = new ResultRepository();
         System.out.println("\nManage result:");
         System.out.println(""" 
-                    1 - View result
-                    2 - Create result
-                    3 - Update result
-                    4 - Delete result
-                    0 - Back to main menu
-                    """);
+                1 - View result
+                2 - Create result
+                3 - Update result
+                4 - Delete result
+                0 - Back to main menu
+                """);
 
-            while (true) {
-                int action = sc.nextInt();
-                sc.nextLine();
+        while (true) {
+            int action = sc.nextInt();
+            sc.nextLine();
 
-                switch (action) {
-                    case 0 -> {System.out.println("\nReturning to main menu...");
-                        return;}
-                    case 1 -> {
-                        List<Result> results = resultRepository.getAllResults();
-                        results.forEach(result ->
-                                System.out.println("ID: " + result.getId() +
-                                        ", User id: " + result.getUser() +
-                                        ", Quiz id: " + result.getQuiz() +
-                                        ", Score: " + result.getScore()));
-
-
-                    }
-                    case 2 -> {
-                        System.out.println("Enter user id:");
-                        int userId = sc.nextInt();
-                        User user = resultRepository.getUserById(userId);
-                        System.out.println("Enter quiz id:");
-                        int quizId = sc.nextInt();
-                        Quiz quiz = resultRepository.getQuizById(quizId);
-                        System.out.println("Enter score");
-                        int score = sc.nextInt();
-
-                        if (user != null||quiz != null) {
-                            Result newResult = new Result();
-                            newResult.setScore(score);
-                            newResult.setUser(user);
-                            newResult.setQuiz(quiz);
-
-                            resultRepository.createResult(newResult);
-                            System.out.println("Result created successfully.");
-                        }
-                    }
-                    case 3 -> {
-                        System.out.println("Enter result ID to update");
-                        int resultId = sc.nextInt();
-                        Result resultToUpdate = resultRepository.getResultById(resultId);
-                        if (resultToUpdate == null) {
-                            System.out.println("Result not found.");
-                            break;
-                        }
-                        System.out.println("Enter new score:");
-                        int newScore = sc.nextInt();
-                        resultToUpdate.setScore(newScore);
-
-                        resultRepository.updateResult(resultToUpdate);
-                        System.out.println("\nNew result created successfully");
-                    }
-                    case 4 -> {
-                        System.out.println("Enter result id to delete:");
-                        int resultId = sc.nextInt();
-                        resultRepository.deleteResultById(resultId);
-                        System.out.println("Result deleted successfully");
-                    }
-                    default -> System.out.println("\nOgiltigt val, försök igen");
+            switch (action) {
+                case 0 -> {
+                    System.out.println("\nReturning to main menu...");
+                    return;
                 }
+                case 1 -> {
+                    List<Result> results = resultRepository.getAllResults();
+                    results.forEach(result ->
+                            System.out.println("ID: " + result.getId() +
+                                    ", User id: " + result.getUser() +
+                                    ", Quiz id: " + result.getQuiz() +
+                                    ", Score: " + result.getScore()));
+
+
+                }
+                case 2 -> {
+                    System.out.println("Enter user id:");
+                    int userId = sc.nextInt();
+                    User user = resultRepository.getUserById(userId);
+                    System.out.println("Enter quiz id:");
+                    int quizId = sc.nextInt();
+                    Quiz quiz = resultRepository.getQuizById(quizId);
+                    System.out.println("Enter score");
+                    int score = sc.nextInt();
+
+                    if (user != null || quiz != null) {
+                        Result newResult = new Result();
+                        newResult.setScore(score);
+                        newResult.setUser(user);
+                        newResult.setQuiz(quiz);
+
+                        resultRepository.createResult(newResult);
+                        System.out.println("Result created successfully.");
+                    }
+                }
+                case 3 -> {
+                    System.out.println("Enter result ID to update");
+                    int resultId = sc.nextInt();
+                    Result resultToUpdate = resultRepository.getResultById(resultId);
+                    if (resultToUpdate == null) {
+                        System.out.println("Result not found.");
+                        break;
+                    }
+                    System.out.println("Enter new score:");
+                    int newScore = sc.nextInt();
+                    resultToUpdate.setScore(newScore);
+
+                    resultRepository.updateResult(resultToUpdate);
+                    System.out.println("\nNew result created successfully");
+                }
+                case 4 -> {
+                    System.out.println("Enter result id to delete:");
+                    int resultId = sc.nextInt();
+                    resultRepository.deleteResultById(resultId);
+                    System.out.println("Result deleted successfully");
+                }
+                default -> System.out.println("\nOgiltigt val, försök igen");
             }
+        }
     }
 
     private static void manageQuestions(Scanner sc) {
@@ -207,94 +235,96 @@ public class Main {
         QuestionRepository questionRepository = new QuestionRepository();
         System.out.println("\nManage questions:");
         System.out.println(""" 
-                    1 - View questions
-                    2 - Create question
-                    3 - Update question
-                    4 - Delete question
-                    0 - Back to main menu
-                    """);
+                1 - View questions
+                2 - Create question
+                3 - Update question
+                4 - Delete question
+                0 - Back to main menu
+                """);
 
-            while (true) {
-                int action = sc.nextInt();
-                sc.nextLine();
+        while (true) {
+            int action = sc.nextInt();
+            sc.nextLine();
 
-                switch (action) {
-                    case 0 -> {System.out.println("\nReturning to main menu...");
-                        return;}
-                    case 1 -> {
-                        System.out.println("Enter id for quiz: ");
-                        int id  = sc.nextInt();
-                        List<Question> questions = questionRepository.listQuestions(id);
-                        questions.forEach(question ->
-                                System.out.println("ID: " + question.getQuestion_id() +
-                                        ", Text: " + question.getText() +
-                                        ", Difficulty: " + question.getDifficulty_level()));
-                    }
-                    case 2 -> {
-                        System.out.println("Enter question description:");
-                        String description = sc.nextLine();
-
-                        System.out.println("Enter difficulty level:");
-                        System.out.println("1. Easy");
-                        System.out.println("2. Medium");
-                        System.out.println("3. Hard");
-                        System.out.print("Enter your choice (1-3): ");
-                        int difficultyChoice = sc.nextInt();
-
-                        System.out.println("Enter quiz id:");
-                        int quizId = sc.nextInt();
-                        Quiz quiz = questionRepository.getQuizById(quizId);
-
-                        Question newQuestion = new Question();
-                        newQuestion.setQuiz(quiz);
-                        newQuestion.setText(description);
-                        newQuestion.setDifficulty_level(getDifficultyLevelByChoice(difficultyChoice));
-
-                        questionRepository.createQuestion(newQuestion);
-
-                        System.out.println("Question created successfully.");
-                    }
-
-                    case 3 -> {
-                        System.out.println("Enter the ID of the question to update:");
-                        int id = sc.nextInt();
-
-                        Question questionToUpdate = questionRepository.getQuestionById(id);
-                        if (questionToUpdate == null) {
-                            System.out.println("Question not found.");
-                            break;
-                        }
-
-                        System.out.println("Enter new title (leave blank to keep current):");
-                        String newTitle = sc.nextLine();
-                        if (!newTitle.isBlank()) {
-                            questionToUpdate.setText(newTitle);
-                        }
-
-                        System.out.println("Enter new difficulty level:");
-                        System.out.println("1. Easy");
-                        System.out.println("2. Medium");
-                        System.out.println("3. Hard");
-                        System.out.println("4. Keep Current");
-                        System.out.print("Enter your choice (1-4): ");
-                        int difficultyChoice = sc.nextInt();
-
-                        if (difficultyChoice != 4) {
-                            questionToUpdate.setDifficulty_level(getDifficultyLevelByChoice(difficultyChoice));
-                        }
-
-                        questionRepository.updateQuestion(questionToUpdate);
-                        System.out.println("Question updated successfully.");
-                    }
-                    case 4 -> {
-                        System.out.println("Enter the ID of the question to delete:");
-                        int id = sc.nextInt();
-                        Question questionToDelete = questionRepository.deleteQuestion(id);
-
-                    }
-                    default -> System.out.println("\nOgiltigt val, försök igen");
+            switch (action) {
+                case 0 -> {
+                    System.out.println("\nReturning to main menu...");
+                    return;
                 }
-                               }
+                case 1 -> {
+                    System.out.println("Enter id for quiz: ");
+                    int id = sc.nextInt();
+                    List<Question> questions = questionRepository.listQuestions(id);
+                    questions.forEach(question ->
+                            System.out.println("ID: " + question.getQuestion_id() +
+                                    ", Text: " + question.getText() +
+                                    ", Difficulty: " + question.getDifficulty_level()));
+                }
+                case 2 -> {
+                    System.out.println("Enter question description:");
+                    String description = sc.nextLine();
+
+                    System.out.println("Enter difficulty level:");
+                    System.out.println("1. Easy");
+                    System.out.println("2. Medium");
+                    System.out.println("3. Hard");
+                    System.out.print("Enter your choice (1-3): ");
+                    int difficultyChoice = sc.nextInt();
+
+                    System.out.println("Enter quiz id:");
+                    int quizId = sc.nextInt();
+                    Quiz quiz = questionRepository.getQuizById(quizId);
+
+                    Question newQuestion = new Question();
+                    newQuestion.setQuiz(quiz);
+                    newQuestion.setText(description);
+                    newQuestion.setDifficulty_level(getDifficultyLevelByChoice(difficultyChoice));
+
+                    questionRepository.createQuestion(newQuestion);
+
+                    System.out.println("Question created successfully.");
+                }
+
+                case 3 -> {
+                    System.out.println("Enter the ID of the question to update:");
+                    int id = sc.nextInt();
+
+                    Question questionToUpdate = questionRepository.getQuestionById(id);
+                    if (questionToUpdate == null) {
+                        System.out.println("Question not found.");
+                        break;
+                    }
+
+                    System.out.println("Enter new title (leave blank to keep current):");
+                    String newTitle = sc.nextLine();
+                    if (!newTitle.isBlank()) {
+                        questionToUpdate.setText(newTitle);
+                    }
+
+                    System.out.println("Enter new difficulty level:");
+                    System.out.println("1. Easy");
+                    System.out.println("2. Medium");
+                    System.out.println("3. Hard");
+                    System.out.println("4. Keep Current");
+                    System.out.print("Enter your choice (1-4): ");
+                    int difficultyChoice = sc.nextInt();
+
+                    if (difficultyChoice != 4) {
+                        questionToUpdate.setDifficulty_level(getDifficultyLevelByChoice(difficultyChoice));
+                    }
+
+                    questionRepository.updateQuestion(questionToUpdate);
+                    System.out.println("Question updated successfully.");
+                }
+                case 4 -> {
+                    System.out.println("Enter the ID of the question to delete:");
+                    int id = sc.nextInt();
+                    Question questionToDelete = questionRepository.deleteQuestion(id);
+
+                }
+                default -> System.out.println("\nOgiltigt val, försök igen");
+            }
+        }
     }
 
     private static DifficultyLevel getDifficultyLevelByChoice(int choice) {
@@ -315,87 +345,89 @@ public class Main {
         AnswerRepository answerRepository = new AnswerRepository();
         System.out.println("\nManage answers:");
         System.out.println(""" 
-                    1 - View answer
-                    2 - Create answer
-                    3 - Update answer
-                    4 - Delete answer
-                    0 - Back to main menu
-                    """);
+                1 - View answer
+                2 - Create answer
+                3 - Update answer
+                4 - Delete answer
+                0 - Back to main menu
+                """);
 
-            while (true) {
-                int action = sc.nextInt();
-                sc.nextLine();
+        while (true) {
+            int action = sc.nextInt();
+            sc.nextLine();
 
-                switch (action) {
-                    case 0 -> {System.out.println("\nReturning to main menu...");
-                        return;}
-                    case 1 -> {
-                        System.out.println("\nEnter id for the question you want answers for");
-                        int questionId = sc.nextInt();
-                        List<Answer> answers = answerRepository.listAnswers(questionId);
-                        answers.forEach(answer ->
-                                System.out.println("ID: " + answer.getId() +
-                                        ", Answer:" + answer.getAnswerText() +
-                                        ", Correct: " + answer.getIsCorrect())
-                                );
-                    }
-                    case 2 -> {
-                        System.out.println("\nEnter the answer:");
-                        String answerText = sc.nextLine();
-                        System.out.println("\nIs the answer true or false?");
-                        Boolean isCorrectAnswer = Boolean.valueOf(sc.nextLine());
-                        System.out.println("\nEnter Question ID for your answer:");
-                        int questionId = sc.nextInt();
-                        Question question = answerRepository.getQuestionById(questionId);
-
-                        if (question != null) {
-                            Answer newAnswer = new Answer();
-                            newAnswer.setIsCorrect(isCorrectAnswer);
-                            newAnswer.setAnswerText(answerText);
-                            newAnswer.setQuestion(question);
-
-                            answerRepository.createAnswer(newAnswer);
-                            System.out.println("\nNew answer created successfully");
-                        } else {
-                            System.out.println("Question not found with ID: " + questionId);
-                        }
-                    }
-                    case 3 -> {
-                        System.out.println("\nEnter answer id:");
-                        int answerId = sc.nextInt();
-                        sc.nextLine();
-                        Answer answerToUpdate = answerRepository.getAnswerById(answerId);
-
-                        if (answerToUpdate == null) {
-                            System.out.println("Answer not found.");
-                            break;
-                        }
-
-                        System.out.println("Enter new answer (leave blank to keep current):");
-                        String newAnswerText = sc.nextLine();
-
-                        if (!newAnswerText.isBlank()) {
-                            answerToUpdate.setAnswerText(newAnswerText);
-                        }
-
-                        System.out.println("Enter if answer is true or false:");
-                        Boolean newIsCorrect = Boolean.valueOf(sc.nextLine());
-                        answerToUpdate.setIsCorrect(newIsCorrect);
-
-                        answerRepository.updateAnswer(answerToUpdate);
-                        System.out.println("\nNew answer created successfully");
-
-                    }
-                    case 4 -> {
-                        System.out.println("\nEnter answer id to delete:");
-                        int answerId = sc.nextInt();
-                        sc.nextLine();
-                        answerRepository.deleteAnswer(answerId);
-                        System.out.println("\nAnswer deleted successfully");
-                    }
-                    default -> System.out.println("\nOgiltigt val, försök igen");
+            switch (action) {
+                case 0 -> {
+                    System.out.println("\nReturning to main menu...");
+                    return;
                 }
+                case 1 -> {
+                    System.out.println("\nEnter id for the question you want answers for");
+                    int questionId = sc.nextInt();
+                    List<Answer> answers = answerRepository.listAnswers(questionId);
+                    answers.forEach(answer ->
+                            System.out.println("ID: " + answer.getId() +
+                                    ", Answer:" + answer.getAnswerText() +
+                                    ", Correct: " + answer.getIsCorrect())
+                    );
+                }
+                case 2 -> {
+                    System.out.println("\nEnter the answer:");
+                    String answerText = sc.nextLine();
+                    System.out.println("\nIs the answer true or false?");
+                    Boolean isCorrectAnswer = Boolean.valueOf(sc.nextLine());
+                    System.out.println("\nEnter Question ID for your answer:");
+                    int questionId = sc.nextInt();
+                    Question question = answerRepository.getQuestionById(questionId);
+
+                    if (question != null) {
+                        Answer newAnswer = new Answer();
+                        newAnswer.setIsCorrect(isCorrectAnswer);
+                        newAnswer.setAnswerText(answerText);
+                        newAnswer.setQuestion(question);
+
+                        answerRepository.createAnswer(newAnswer);
+                        System.out.println("\nNew answer created successfully");
+                    } else {
+                        System.out.println("Question not found with ID: " + questionId);
+                    }
+                }
+                case 3 -> {
+                    System.out.println("\nEnter answer id:");
+                    int answerId = sc.nextInt();
+                    sc.nextLine();
+                    Answer answerToUpdate = answerRepository.getAnswerById(answerId);
+
+                    if (answerToUpdate == null) {
+                        System.out.println("Answer not found.");
+                        break;
+                    }
+
+                    System.out.println("Enter new answer (leave blank to keep current):");
+                    String newAnswerText = sc.nextLine();
+
+                    if (!newAnswerText.isBlank()) {
+                        answerToUpdate.setAnswerText(newAnswerText);
+                    }
+
+                    System.out.println("Enter if answer is true or false:");
+                    Boolean newIsCorrect = Boolean.valueOf(sc.nextLine());
+                    answerToUpdate.setIsCorrect(newIsCorrect);
+
+                    answerRepository.updateAnswer(answerToUpdate);
+                    System.out.println("\nNew answer created successfully");
+
+                }
+                case 4 -> {
+                    System.out.println("\nEnter answer id to delete:");
+                    int answerId = sc.nextInt();
+                    sc.nextLine();
+                    answerRepository.deleteAnswer(answerId);
+                    System.out.println("\nAnswer deleted successfully");
+                }
+                default -> System.out.println("\nOgiltigt val, försök igen");
             }
+        }
     }
 
     private static void manageUsers() {
