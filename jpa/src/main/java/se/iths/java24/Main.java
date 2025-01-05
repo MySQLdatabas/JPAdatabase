@@ -53,13 +53,13 @@ public class Main {
         QuizRepository quizRepository = new QuizRepository();
         System.out.println("\nManage quiz:");
         System.out.println(""" 
-                1 - View quiz
-                2 - Create quiz
-                3 - Update quiz
-                4 - Delete quiz
-                5 - View quiz statistics
-                0 - Back to main menu
-                """);
+            1 - View quiz
+            2 - Create quiz
+            3 - Update quiz
+            4 - Delete quiz
+            5 - View quiz statistics
+            0 - Back to main menu
+            """);
 
         while (true) {
             int action = sc.nextInt();
@@ -125,10 +125,15 @@ public class Main {
                     System.out.println("Quiz deleted successfully.");
                 }
                 case 5 -> {
-                    System.out.println("1 - Total quizzes");
-                    System.out.println("2 - Recent quizzes");
-                    System.out.println("3 - Count quizzes by description length");
-                    System.out.println("0 - Back");
+                    System.out.println("\nQuiz Statistics:");
+                    System.out.println("""
+                        1 - Total quizzes
+                        2 - Recent quizzes
+                        3 - Count quizzes by description length
+                        4 - Average score for a quiz
+                        5 - Top scorers for a quiz
+                        0 - Back
+                        """);
                     int statAction = sc.nextInt();
                     sc.nextLine();
 
@@ -136,20 +141,41 @@ public class Main {
                         case 0 -> System.out.println("Returning...");
                         case 1 -> System.out.println("Total quizzes: " + QuizStatistics.getTotalQuizzes());
                         case 2 -> {
-                            System.out.println("Enter number of recent quizzes to fetch:");
+                            System.out.println("Enter the number of recent quizzes to fetch:");
                             int limit = sc.nextInt();
+                            sc.nextLine();
                             List<Quiz> recentQuizzes = QuizStatistics.getRecentQuizzes(limit);
-                            recentQuizzes.forEach(System.out::println);
+                            recentQuizzes.forEach(quiz -> System.out.println(
+                                    "ID: " + quiz.getQuizId() + ", Title: " + quiz.getTitle()));
                         }
                         case 3 -> {
                             System.out.println("Enter minimum description length:");
                             int minLength = sc.nextInt();
+                            sc.nextLine();
                             System.out.println("Count: " + QuizStatistics.countQuizzesByDescriptionLength(minLength));
+                        }
+                        case 4 -> {
+                            System.out.println("Enter the quiz ID to calculate the average score:");
+                            int quizId = sc.nextInt();
+                            sc.nextLine();
+                            double avgScore = QuizStatistics.getAverageScore(quizId);
+                            System.out.println("The average score for quiz ID " + quizId + " is: " + avgScore);
+                        }
+                        case 5 -> {
+                            System.out.println("Enter the quiz ID:");
+                            int quizId = sc.nextInt();
+                            sc.nextLine();
+                            System.out.println("Enter the number of top scorers to display:");
+                            int limit = sc.nextInt();
+                            sc.nextLine();
+                            List<Result> topScorers = QuizStatistics.getTopScorers(quizId, limit);
+                            topScorers.forEach(result -> System.out.println(
+                                    "User ID: " + result.getUser().getUserId() + ", Score: " + result.getScore()));
                         }
                         default -> System.out.println("Invalid choice.");
                     }
                 }
-                default -> System.out.println("\nOgiltigt val, försök igen");
+                default -> System.out.println("\nInvalid option. Please try again.");
             }
         }
     }
@@ -239,6 +265,7 @@ public class Main {
                 2 - Create question
                 3 - Update question
                 4 - Delete question
+                5 - Manage questions Statistics
                 0 - Back to main menu
                 """);
 
