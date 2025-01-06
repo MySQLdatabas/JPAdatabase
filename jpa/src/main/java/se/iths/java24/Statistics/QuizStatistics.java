@@ -48,5 +48,29 @@ public class QuizStatistics {
                 .getResultList();
     }
 
+    public static long getTotalQuizAttempts() {
+        return JPAUtil.getEntityManager().createQuery(
+                "SELECT COUNT(r) FROM Result r", Long.class
+        ).getSingleResult();
+    }
+
+    public static long getTotalParticipants(int quizId) {
+        return JPAUtil.getEntityManager().createQuery(
+                "SELECT COUNT(DISTINCT r.user.id) FROM Result r WHERE r.quiz.id = :quizId", Long.class
+        ).setParameter("quizId", quizId).getSingleResult();
+    }
+
+    public static double getOverallAverageScore() {
+        return JPAUtil.getEntityManager().createQuery(
+                "SELECT AVG(r.score) FROM Result r", Double.class
+        ).getSingleResult();
+    }
+
+    public static int getHighestScore(int quizId) {
+        return JPAUtil.getEntityManager().createQuery(
+                "SELECT MAX(r.score) FROM Result r WHERE r.quiz.id = :quizId", Integer.class
+        ).setParameter("quizId", quizId).getSingleResult();
+    }
+
 }
 

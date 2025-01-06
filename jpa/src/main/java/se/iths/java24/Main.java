@@ -54,13 +54,13 @@ public class Main {
         while (true) {
             System.out.println("\nManage quiz:");
             System.out.println(""" 
-            1 - View quiz
-            2 - Create quiz
-            3 - Update quiz
-            4 - Delete quiz
-            5 - View quiz statistics
-            0 - Back to main menu
-            """);
+        1 - View quiz
+        2 - Create quiz
+        3 - Update quiz
+        4 - Delete quiz
+        5 - View quiz statistics
+        0 - Back to main menu
+        """);
 
             int action = sc.nextInt();
             sc.nextLine();
@@ -128,13 +128,17 @@ public class Main {
                     while (true) {
                         System.out.println("\nQuiz Statistics:");
                         System.out.println("""
-                        1 - Total quizzes
-                        2 - Recent quizzes
-                        3 - Count quizzes by description length
-                        4 - Average score for a quiz
-                        5 - Top scorers for a quiz
-                        0 - Back
-                        """);
+                    1 - Total quizzes
+                    2 - Recent quizzes
+                    3 - Count quizzes by description length
+                    4 - Average score for a quiz
+                    5 - Top scorers for a quiz
+                    6 - Total quiz attempts
+                    7 - Total participants for a quiz
+                    8 - Overall average score
+                    9 - Highest score for a quiz
+                    0 - Back
+                    """);
 
                         int statAction = sc.nextInt();
                         sc.nextLine();
@@ -177,6 +181,20 @@ public class Main {
                                 List<Result> topScorers = QuizStatistics.getTopScorers(quizId, limit);
                                 topScorers.forEach(result -> System.out.println(
                                         "User ID: " + result.getUser().getUserId() + ", Score: " + result.getScore()));
+                            }
+                            case 6 -> System.out.println("Total quiz attempts: " + QuizStatistics.getTotalQuizAttempts());
+                            case 7 -> {
+                                System.out.println("Enter the quiz ID:");
+                                int quizId = sc.nextInt();
+                                sc.nextLine();
+                                System.out.println("Total participants for quiz ID " + quizId + ": " + QuizStatistics.getTotalParticipants(quizId));
+                            }
+                            case 8 -> System.out.println("Overall average score: " + QuizStatistics.getOverallAverageScore());
+                            case 9 -> {
+                                System.out.println("Enter the quiz ID:");
+                                int quizId = sc.nextInt();
+                                sc.nextLine();
+                                System.out.println("Highest score for quiz ID " + quizId + ": " + QuizStatistics.getHighestScore(quizId));
                             }
                             default -> System.out.println("Invalid choice.");
                         }
