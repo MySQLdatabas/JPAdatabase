@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long question_id;
+    private int question_id;
 
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
@@ -35,11 +35,11 @@ public class Question {
         this.difficulty_level = difficulty_level;
     }
 
-    public Long getQuestion_id() {
+    public int getQuestion_id() {
         return question_id;
     }
 
-    public void setQuestion_id(Long question_id) {
+    public void setQuestion_id(int question_id) {
         this.question_id = question_id;
     }
 

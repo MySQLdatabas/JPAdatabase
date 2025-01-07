@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import static se.iths.java24.Service.QuizGame.playQuiz;
+
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
 
@@ -39,6 +41,7 @@ public class Main {
                 case 3 -> manageQuestions(sc);
                 case 4 -> manageResult(sc);
                 case 5 -> manageUsers();
+                case 6 -> playQuiz(sc);
                 default -> System.out.println("\nInvalid choice, try again.");
             }
 
@@ -568,6 +571,7 @@ public class Main {
                 3 - Manage questions
                 4 - Manage results
                 5 - Manage Users
+                6 - Play quiz
                 0 - Exit
                 """);
     }
