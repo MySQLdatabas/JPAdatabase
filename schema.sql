@@ -35,7 +35,7 @@ CREATE TABLE Answer (
 
 CREATE TABLE Result (
                         result_id INT AUTO_INCREMENT PRIMARY KEY,
-                        score INT NOT NULL,
+                        score INT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         user_id INT,
                         quiz_id INT,

@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager; // For interacting with the database
 import se.iths.java24.Entity.*;
 import se.iths.java24.Repository.*;
 import jakarta.persistence.EntityManager;
+import se.iths.java24.Service.QuizGame;
 import se.iths.java24.Service.UserService;
 import se.iths.java24.Statistics.QuizStatistics;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import static se.iths.java24.Service.QuizGame.playQuiz;
+
 
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
@@ -49,6 +50,11 @@ public class Main {
                 printActions();
             }
         }
+    }
+
+    private static void playQuiz(Scanner sc) {
+    QuizGame game = new QuizGame();
+    game.playQuiz(sc);
     }
 
 

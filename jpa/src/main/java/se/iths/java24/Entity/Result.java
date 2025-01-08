@@ -13,7 +13,7 @@ public class Result {
     @Column(name = "result_id", nullable = false)
     private Integer id;
 
-    @Column(name = "score", nullable = false)
+    @Column(name = "score")
     private Integer score;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,6 +26,15 @@ public class Result {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    public Result(User userId, int score, Quiz newQuiz) {
+        this.user = userId;
+        this.quiz = newQuiz;
+        this.score = score;
+    }
+
+    public Result() {
+    }
 
     @PrePersist
     public void prePersist() {

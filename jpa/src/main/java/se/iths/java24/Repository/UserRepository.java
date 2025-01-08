@@ -27,6 +27,13 @@ public class UserRepository {
         return Optional.ofNullable(user);
     }
 
+    public User getUserIdByUsername(String username) {
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+    }
+
     public void updateUser(User user) {
         entityManager.merge(user);
     }

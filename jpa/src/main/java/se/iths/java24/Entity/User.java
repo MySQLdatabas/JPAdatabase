@@ -84,6 +84,7 @@ public class User {
         this.createdAt = createdAt;
     }
 
+
     // Optional alias for setUsername
     public void setName(String name) {
         setUsername(name);
