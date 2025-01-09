@@ -58,6 +58,11 @@ public class QuizGame {
                 System.out.println("Question: " + question.getText());
                 List<Answer> answers = answerRepository.listAnswers(question.getQuestion_id());
 
+                if (answers == null || answers.isEmpty()) {
+                    System.out.println("No answers available for this question.");
+                    continue; // Skip this question
+                }
+
                 int i = 1;
                 for (Answer answer : answers) {
                     System.out.println(i + ". " + answer.getAnswerText());
@@ -67,6 +72,11 @@ public class QuizGame {
                 System.out.println("Type the number of the answer:");
                 int userChoice = sc.nextInt();
 
+                if (userChoice < 1 || userChoice > answers.size()) {
+                    System.out.println("Invalid choice. Skipping question.");
+                    continue;
+                }
+
                 if (answers.get(userChoice - 1).getIsCorrect()) {
                     score++;
                     System.out.println("Right answer!");
@@ -74,6 +84,7 @@ public class QuizGame {
                     System.out.println("That's not right. You were wrong.");
                 }
             }
+
 
             Quiz quiz = resultRepository.getQuizById(quizId);
             User user = userRepository.getUserIdByUsername(username);

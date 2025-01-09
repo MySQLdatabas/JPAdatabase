@@ -1,6 +1,11 @@
 CREATE DATABASE demo;
 USE demo;
 
+DROP DATABASE IF EXISTS demo;
+
+CREATE DATABASE demo;
+USE demo;
+
 CREATE TABLE User (
                       user_id INT AUTO_INCREMENT PRIMARY KEY,
                       username VARCHAR(50) NOT NULL UNIQUE,
@@ -32,10 +37,9 @@ CREATE TABLE Answer (
                         FOREIGN KEY (question_id) REFERENCES Question(question_id) ON DELETE CASCADE
 );
 
-
 CREATE TABLE Result (
                         result_id INT AUTO_INCREMENT PRIMARY KEY,
-                        score INT,
+                        score INT NOT NULL,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         user_id INT,
                         quiz_id INT,
@@ -43,6 +47,7 @@ CREATE TABLE Result (
                         FOREIGN KEY (quiz_id) REFERENCES Quiz(quiz_id) ON DELETE CASCADE
 );
 
+-- Insert data for User table
 INSERT INTO User (username, email, password)
 VALUES
     ('coder1', 'coder1@example.com', 'hashed_password1'),
@@ -97,45 +102,12 @@ VALUES
     (3, 'It refers to the current object.', TRUE),
     (3, 'It is used to create a new object.', FALSE),
     (3, 'It is a reserved keyword.', FALSE),
+    (9, 'An interface defines a contract of methods that a class must implement, while an abstract class can have both abstract and concrete methods.', TRUE),
+    (9, 'Interfaces can have constructors, while abstract classes cannot.', FALSE),
+    (9, 'There is no difference between interfaces and abstract classes.', FALSE),
     (4, 'Closures allow functions to access and "remember" variables from the scope in which they were created.', TRUE),
     (4, 'Closures are used to define anonymous functions.', FALSE),
-    (4, 'Closures are only available in modern JavaScript versions.', FALSE),
-    (5, 'It is the entry point of a Java program.', TRUE),
-    (5, 'It is used to define the main class.', FALSE),
-    (5, 'It is optional in all Java programs.', FALSE),
-    (6, 'Inheritance allows classes to inherit properties and methods from other classes.', TRUE),
-    (6, 'Inheritance is only used for interface implementation.', FALSE),
-    (6, 'Inheritance is not supported in Java.', FALSE),
-    (7, 'An interface defines a contract of methods that a class must implement, while an abstract class can have both abstract and concrete methods.', TRUE),
-    (7, 'Interfaces can have constructors, while abstract classes cannot.', FALSE),
-    (7, 'There is no difference between interfaces and abstract classes.', FALSE),
-    (8, 'Hello, World!', TRUE),
-    (8, 'hello world', FALSE),
-    (8, 'Hello World', FALSE),
-    (9, 'Pointers are variables that store the memory address of another variable.', TRUE),
-    (9, 'Pointers are used to store data in C++.', FALSE),
-    (9, 'Pointers are functions in C++.', FALSE),
-    (10, 'RAII stands for Resource Acquisition Is Initialization, and it is a programming idiom that ensures resource management.', TRUE),
-    (10, 'RAII is a memory management model in Java.', FALSE),
-    (10, 'RAII is not used in C++.', FALSE),
-    (11, 'A binary tree is a tree data structure in which each node has at most two children.', TRUE),
-    (11, 'A binary tree is a graph.', FALSE),
-    (11, 'A binary tree can have only one child per node.', FALSE),
-    (12, 'A stack is a Last-In-First-Out (LIFO) data structure, while a queue is First-In-First-Out (FIFO).', TRUE),
-    (12, 'Both stack and queue are LIFO.', FALSE),
-    (12, 'Both stack and queue are FIFO.', FALSE),
-    (13, 'A hash table is a data structure that maps keys to values for efficient lookup.', TRUE),
-    (13, 'A hash table is a tree structure.', FALSE),
-    (13, 'A hash table is used for sorting data.', FALSE),
-    (14, 'The time complexity of binary search is O(log n).', TRUE),
-    (14, 'The time complexity of binary search is O(n).', FALSE),
-    (14, 'The time complexity of binary search is O(1).', FALSE),
-    (15, 'Quicksort is generally faster for smaller datasets and in-place, while mergesort is more stable and better for larger datasets.', TRUE),
-    (15, 'Quicksort is always faster than mergesort.', FALSE),
-    (15, 'Mergesort is always faster than quicksort.', FALSE),
-    (16, 'Dynamic programming is a method for solving complex problems by breaking them down into simpler subproblems.', TRUE),
-    (16, 'Dynamic programming is a type of sorting algorithm.', FALSE),
-    (16, 'Dynamic programming is a data structure.', FALSE);
+    (4, 'Closures are only available in modern JavaScript versions.', FALSE);
 
 -- Insert data for Result table
 INSERT INTO Result (user_id, quiz_id, score)
